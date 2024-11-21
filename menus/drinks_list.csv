@@ -1,0 +1,9 @@
+Drinks List
+admin,r w
+manager,r w
+employee,r
+customer,r
+Americano,3.49
+Latte,3.99
+Cappuccino,3.99
+Mocha,4.49

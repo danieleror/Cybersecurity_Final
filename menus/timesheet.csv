@@ -1,0 +1,7 @@
+Timesheet
+admin,r w
+manager,r w
+employee,r
+customer,
+johnsmith,40
+nancyadams,35
