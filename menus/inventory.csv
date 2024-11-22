@@ -1,9 +1,0 @@
-Inventory
-admin,r w
-manager,r w
-employee,r w
-customer,
-Coffee,Stocked
-Milk,Low
-Cups,Stocked
-Sugar,Out of Stock

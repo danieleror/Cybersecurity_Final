@@ -10,13 +10,14 @@
     <body>
         <h1>Dan's Coffee Shop</h1>
         <h2>Please enter new user information below</h2>
-        <h3>Note... username must be 4-12 characters long and password must have the following:</h3>
+        <h3>Note... username must be 4-12 characters long and password must match following constraints:</h3>
         <ul>
             <li>8-25 characters</li>
             <li>At least one number</li>
             <li>At least one uppercase letter</li>
             <li>At least one lowercase letter</li>
-            <li>At least one special character</li>
+            <li>At least one of the following special characters: !@#$%&*?(){}[]</li>
+            <li>Must not contain quotes</li>
         </ul>
         <form method="POST">
                 <label for="username">Username:</label><input
