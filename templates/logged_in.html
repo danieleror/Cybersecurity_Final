@@ -9,12 +9,24 @@
 
     <body>
         <h1>Dan's Coffee Shop</h1>
-        <h2>Welcome {{ username }}!</h2>
+        <h2>Welcome {{ username }}! Please select from menus below...</h2>
 
         <form method="POST">
-                <button name="home">
-                    Log out
-                </button><br/>
+            <button name="admin">
+                Admin Access
+            </button><br/>
+            <button name="inventory">
+                Inventory
+            </button><br/>
+            <button name="timesheet">
+                Employee Timesheet
+            </button><br/>
+            <button name="menu">
+                Drink Menu
+            </button><br/>
+            <button name="home">
+                Log out
+            </button><br/>
         </form>
     </body>
 </html>

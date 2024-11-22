@@ -19,6 +19,7 @@ username_locked_out = ''
 access_level = ''
 failed_logins ={}
 
+
 @app.route("/", methods=['GET', 'POST'])
 def home():
     """ Bank home page """
@@ -110,6 +111,7 @@ def incorrect_password():
 
 @app.route("/locked_out", methods=['GET', 'POST'])
 def locked_out():
+    global username_locked_out
     if request.method == 'POST':
         if 'back' in request.form.to_dict().keys():
             return redirect(url_for('login'))
@@ -119,13 +121,68 @@ def locked_out():
 
 @app.route("/logged_in", methods=['GET', 'POST'])
 def logged_in():
+    global access_level, username_logged_in, access_level
     if request.method == 'POST':
         if 'home' in request.form.to_dict().keys():
-            global username_logged_in, access_level
             username_logged_in = ''
             access_level = ''
             return redirect(url_for('home'))
+        elif 'admin' in request.form.to_dict().keys():
+            if access_level == 'admin':
+                return redirect(url_for('admin'))
+            else:
+                return redirect(url_for('unauthorized'))
+        elif 'inventory' in request.form.to_dict().keys():
+            if access_level == 'admin' or access_level == 'manager':
+                return redirect(url_for('inventory'))
+            else:
+                return redirect(url_for('unauthorized'))
+        elif 'timesheet' in request.form.to_dict().keys():
+            if access_level == 'admin' or access_level == 'manager' or access_level == 'employee':
+                return redirect(url_for('timesheet'))
+            else:
+                return redirect(url_for('unauthorized'))
+        elif 'menu' in request.form.to_dict().keys():
+            return redirect(url_for('menu'))
+
     return render_template('logged_in.html', username=username_logged_in)
+
+
+@app.route("/unauthorized", methods=['GET', 'POST'])
+def unauthorized():
+    global username_logged_in
+    if 'back' in request.form.to_dict().keys():
+        return redirect(url_for('logged_in'))
+    return render_template("unauthorized.html", username=username_logged_in)
+
+
+@app.route("/admin", methods=['GET', 'POST'])
+def admin():
+    if 'back' in request.form.to_dict().keys():
+        return redirect(url_for('logged_in'))
+    return render_template("admin.html")
+
+
+@app.route("/inventory", methods=['GET', 'POST'])
+def inventory():
+    if 'back' in request.form.to_dict().keys():
+        return redirect(url_for('logged_in'))
+    return render_template("inventory.html")
+
+
+@app.route("/timesheet", methods=['GET', 'POST'])
+def timesheet():
+    if 'back' in request.form.to_dict().keys():
+        return redirect(url_for('logged_in'))
+    return render_template("timesheet.html")
+
+
+@app.route("/menu", methods=['GET', 'POST'])
+def menu():
+    if 'back' in request.form.to_dict().keys():
+        return redirect(url_for('logged_in'))
+    return render_template("menu.html")
+
 
 @app.route("/register",  methods=['GET', 'POST'])
 def register():
