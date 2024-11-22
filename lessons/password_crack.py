@@ -10,7 +10,7 @@ from base64 import b64encode
 # import os  # << hint
 
 
-def hash_pw(plain_text, salt='') -> str:
+def hash_pw(plain_text) -> str:
     """
     Generate hash of plain text. Here we allow for passing in a salt
     explicitly. This is so you can tinker and see the results.

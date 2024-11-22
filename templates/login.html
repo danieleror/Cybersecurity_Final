@@ -10,16 +10,17 @@
     <body>
         <h1>Dan's Coffee Shop</h1>
         <h2>Please login below</h2>
-        <form action="{{ url_for('.login') }}" method="POST" id="login_form">
+        <form method="POST" action="{{ url_for('.login') }}">
                 <label for="username">Username:</label><input
                     type="text" id="username"
-                    name="username" required><br/>
+                    name="username"><br/>
                 <label for="password">Password:</label><input
                     type='password' id="password"
-                    name="password" required>
+                    name="password">
                 <button type="submit">
                     Submit
-                </button>
+                </button><br/>
+                <button name="home">Return to Home</button>
         </form>
     </body>
 </html>

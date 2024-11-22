@@ -10,7 +10,7 @@
     <body>
         <h1>Dan's Coffee Shop</h1>
         <h2>Please enter new user information below</h2>
-        <h3>Note... password must have the following:</h3>
+        <h3>Note... username must be 4-12 characters long and password must have the following:</h3>
         <ul>
             <li>8-25 characters</li>
             <li>At least one number</li>
@@ -18,16 +18,36 @@
             <li>At least one lowercase letter</li>
             <li>At least one special character</li>
         </ul>
-        <form action="{{ url_for('.login') }}" method="POST" id="register_form">
+        <form method="POST">
                 <label for="username">Username:</label><input
                     type="text" id="username"
-                    name="username" required><br/>
+                    name="username"><br/>
                 <label for="password">Password:</label><input
                     type='password' id="password"
-                    name="password" required>
+                    name="password">
                 <button type="submit">
                     Submit
-                </button>
+                </button><br/>
+                <script>
+                    let password = "";
+                    for(let i = 0; i < 2; i ++){
+                        password += Math.floor(Math.random()*10) + "";
+                    }
+                    let special_chars="!@#$%^&*()~`\\][|}{=-+_';:\"}]<>?,./";
+                    for(let i = 0; i < 2; i ++){
+                        password += special_chars[Math.floor(Math.random() * special_chars.length)];
+                    }
+                    let lowercase = "abcdefghijklmnopqrstuvwxyz";
+                    let uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    for(let i = 0; i < 2; i ++){
+                        password += lowercase[Math.floor(Math.random() * lowercase.length)]
+                    }
+                    for(let i = 0; i < 2; i ++){
+                        password += uppercase[Math.floor(Math.random() * uppercase.length)]
+                    }
+                    document.write("<h3>Suggested password: " + password + "</h3>");
+                </script><br/>
+                <button name="home">Return to Home</button>
         </form>
     </body>
 </html>
