@@ -29,24 +29,32 @@
                     Submit
                 </button><br/>
                 <script>
-                    let password = "";
-                    for(let i = 0; i < 2; i ++){
-                        password += Math.floor(Math.random()*10) + "";
-                    }
-                    let special_chars="!@#$%^&*()~`\\][|}{=-+_';:\"}]<>?,./";
-                    for(let i = 0; i < 2; i ++){
+                    function generate_password(){
+                        let password = "";
+                        for(let i = 0; i < 2; i ++){
+                            password += Math.floor(Math.random()*10) + "";
+                        }
+                        let special_chars="!@#$%&*?(){}[]";
                         password += special_chars[Math.floor(Math.random() * special_chars.length)];
+                        let lowercase = "abcdefghijklmnopqrstuvwxyz";
+                        let uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                        for(let i = 0; i < 2; i ++){
+                            password += lowercase[Math.floor(Math.random() * lowercase.length)]
+                        }
+                        for(let i = 0; i < 3; i ++){
+                            password += uppercase[Math.floor(Math.random() * uppercase.length)]
+                        }
+                        return "<h3>Suggested password: " + password + "</h3>";
                     }
-                    let lowercase = "abcdefghijklmnopqrstuvwxyz";
-                    let uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                    for(let i = 0; i < 2; i ++){
-                        password += lowercase[Math.floor(Math.random() * lowercase.length)]
+
+                    function refresh_password(){
+                        pw = generate_password();
                     }
-                    for(let i = 0; i < 2; i ++){
-                        password += uppercase[Math.floor(Math.random() * uppercase.length)]
-                    }
-                    document.write("<h3>Suggested password: " + password + "</h3>");
+
+                    let pw = generate_password();
+                    document.write(pw);
                 </script><br/>
+                <button onclick="refresh_password()" name="pw_gen">Generate new Password</button>
                 <button name="home">Return to Home</button>
         </form>
     </body>

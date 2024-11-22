@@ -12,10 +12,13 @@ training purposes only!
 from flask import Flask, render_template, request, url_for, flash, redirect
 from lessons import sql_injection
 from lessons.password_crack import hash_pw, authenticate
+import sqlite3
 
 app = Flask(__name__, static_folder='instance/static')
-
 app.config.from_object('config')
+
+username_logged_in = ''
+access_level = ''
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -33,28 +36,81 @@ def home():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+    global username_logged_in, access_level
     if request.method == 'POST':
         if 'home' in request.form.to_dict().keys():
             return redirect(url_for('home'))
+        username = request.form.get('username')
+        password = request.form.get('password')
+        connection = sqlite3.connect('dans_coffee_shop.db')
+        cursor = connection.cursor()
+        cursor.execute('''
+                          SELECT * FROM user_info      
+                            ''')
+        user_data = cursor.fetchall()
+        connection.commit()
+        connection.close()
+
+        userExists = False
+        saved_password = ''
+        for user in user_data:
+            print(user)
+            if username == user[0]:
+                userExists = True
+                username_logged_in = user[0]
+                saved_password = user[1]
+                access_level = user[2]
+
+        if not userExists:
+            return redirect(url_for('user_not_found'))
+        if authenticate(saved_password, password):
+            return redirect(url_for('/logged_in'))
+        username_logged_in = ''
+        access_level = ''
 
     return render_template('login.html',
                            title="Secure Login",
                            heading="Secure Login")
 
 
+@app.route("/user_not_found", methods=['GET','POST'])
+def user_not_found():
+    if request.method == 'POST':
+        if 'back' in request.form.to_dict().keys():
+            return redirect(url_for('login'))
+    return render_template('user_not_found.html')
+
+
+@app.route("/logged_in", methods=['GET','POST'])
+def logged_in():
+    if request.method == 'POST':
+        if 'home' in request.form.to_dict().keys():
+            return redirect('home.html')
+    return render_template('logged_in.html', username=username_logged_in)
+
 @app.route("/register",  methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         if 'home' in request.form.to_dict().keys():
             return redirect(url_for('home'))
-        username = request.form.get('username')
-        password = request.form.get('password')
-        if 4 <= len(username) <= 12 and check_password_strength(password):
-            password_hash = hash_pw(password)
-            # TODO add new user to database
-            return redirect(url_for('registration_success'))
-        else:
-            return redirect(url_for('registration_failed'))
+        elif 'pw_gen' not in request.form.to_dict().keys():
+            username = request.form.get('username')
+            password = request.form.get('password')
+            if 4 <= len(username) <= 12 and check_password_strength(password):
+                password_hash = hash_pw(password)
+                # TODO add new user to database
+                connection = sqlite3.connect('dans_coffee_shop.db')
+                cursor = connection.cursor()
+                cursor.execute('''
+                        INSERT INTO user_info (username, password, access_level)
+                        VALUES ("''' + username + '''", "''' + password_hash + '''", "customer")
+                    ''')
+                connection.commit()
+                connection.close()
+
+                return redirect(url_for('registration_success'))
+            else:
+                return redirect(url_for('registration_failed'))
     return render_template('register.html',
                            title="New User Registration",
                            heading="New User Registration")
