@@ -53,9 +53,13 @@
                         
                         //shuffles the new password so each one is in a different order (so the numbers and special chars are not always at the start)
                         let pass_chars = password.split('');  // splits password into list of chars
-                        for (let i = pass_chars.length - 1; i > 0; i--) {  // loops through entire string
+                        for (let i = 1; i < pass_chars.length; i++) {  // loops through entire string
                             const j = Math.floor(Math.random() * (i + 1));  // gets a random index to perform swap with current index
-                            [pass_chars[i], pass_chars[j]] = [pass_chars[j], pass_chars[i]];  //swaps two characters
+                            
+                            //swaps the two characters
+                            let temp = pass_chars[i];
+                            pass_chars[i] = pass_chars[j];
+                            pass_chars[j] = temp;
                         }
                         password = pass_chars.join('');  // rejoins the chars into a string
 

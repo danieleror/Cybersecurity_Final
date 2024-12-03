@@ -28,3 +28,10 @@ access levels. This file is only included because this is a small project and th
 the real world, I would not have this information in a file like this as it is a serious vulnerability and would make
 hashing the passwords irrelevant. You can use this login data to test different access levels, and see how my program
 reacts to users with lower access trying to access admin level data.
+
+### Source Code
+
+I use the functions written in the `password_crack.py` file we used in a previous lab. I also modified `werk.py` and 
+`bank.py` to work with my project. The `config.py` file is taken directly from the lab, and not modified for this
+project. In all honesty, I'm not entirely sure what it's purpose is, but it was needed for this to run so it's here to 
+stay. All html code, and javascript therein, was written by me entirely. 
