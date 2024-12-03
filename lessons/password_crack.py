@@ -10,9 +10,6 @@ import os
 from base64 import b64encode
 
 
-# import os  # << hint
-
-
 def hash_pw(plain_text) -> str:
     salt = b64encode(os.urandom(30)).decode('utf-8')  # generates a 40-character random salt and decodes it to plaintext
     hashable = salt + plain_text  # concatenate salt and plain_text

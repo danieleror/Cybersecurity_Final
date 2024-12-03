@@ -32,11 +32,16 @@
                 <script>
                     function generate_password(){
                         let password = "";
+                        // adds two numbers
                         for(let i = 0; i < 2; i ++){
                             password += Math.floor(Math.random()*10) + "";
                         }
+
+                        // adds a special char
                         let special_chars="!@#$%&*?(){}[]";
                         password += special_chars[Math.floor(Math.random() * special_chars.length)];
+
+                        // adds three upper and two lowercase letters
                         let lowercase = "abcdefghijklmnopqrstuvwxyz";
                         let uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                         for(let i = 0; i < 2; i ++){
@@ -45,6 +50,15 @@
                         for(let i = 0; i < 3; i ++){
                             password += uppercase[Math.floor(Math.random() * uppercase.length)]
                         }
+                        
+                        //shuffles the new password so each one is in a different order (so the numbers and special chars are not always at the start)
+                        let pass_chars = password.split('');  // splits password into list of chars
+                        for (let i = pass_chars.length - 1; i > 0; i--) {  // loops through entire string
+                            const j = Math.floor(Math.random() * (i + 1));  // gets a random index to perform swap with current index
+                            [pass_chars[i], pass_chars[j]] = [pass_chars[j], pass_chars[i]];  //swaps two characters
+                        }
+                        password = pass_chars.join('');  // rejoins the chars into a string
+
                         return "<h3>Suggested password: " + password + "</h3>";
                     }
 

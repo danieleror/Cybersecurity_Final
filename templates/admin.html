@@ -11,6 +11,24 @@
         <h1>Dan's Coffee Shop</h1>
         <h2>Admin page</h2>
 
+        <table>
+            <thead>
+            <tr>
+                <th>username</th>
+                <th>hashed password</th>
+                <th>access_level</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in data %}
+            <tr>
+                <td>{{ user[0] }}</td>
+                <td>{{ user[1] }}</td>
+                <td>{{ user[2] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
         <form method="POST">
                 <button name="back">
                     Back

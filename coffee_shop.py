@@ -56,7 +56,6 @@ def login():
         user_exists = False
         saved_password = ''
         for user in user_data:
-            print(user)
             if username == user[0]:
                 user_exists = True
                 username_logged_in = user[0]
@@ -119,9 +118,12 @@ def locked_out():
             return redirect(url_for('home'))
     return render_template('locked_out.html', username=username_locked_out)
 
+
 @app.route("/logged_in", methods=['GET', 'POST'])
 def logged_in():
     global access_level, username_logged_in, access_level
+    if username_logged_in == '':  # redirects to home if no one is logged in
+        return redirect(url_for('home'))
     if request.method == 'POST':
         if 'home' in request.form.to_dict().keys():
             username_logged_in = ''
@@ -160,28 +162,70 @@ def unauthorized():
 def admin():
     if 'back' in request.form.to_dict().keys():
         return redirect(url_for('logged_in'))
-    return render_template("admin.html")
+    if access_level != 'admin':
+        return redirect(url_for('unauthorized'))
+    # connects to database and retrieves all user information to display to admin
+    connection = sqlite3.connect('dans_coffee_shop.db')
+    cursor = connection.cursor()
+    cursor.execute('''
+            SELECT * FROM user_info      
+        ''')
+    user_data = cursor.fetchall()
+    connection.commit()
+    connection.close()
+    return render_template("admin.html", data=user_data)
 
 
 @app.route("/inventory", methods=['GET', 'POST'])
 def inventory():
     if 'back' in request.form.to_dict().keys():
         return redirect(url_for('logged_in'))
-    return render_template("inventory.html")
+    if access_level != 'admin' and access_level != 'manager':
+        return redirect(url_for('unauthorized'))
+    # connects to database and retrieves inventory info to display to admin/manager
+    connection = sqlite3.connect('dans_coffee_shop.db')
+    cursor = connection.cursor()
+    cursor.execute('''
+            SELECT * FROM inventory      
+        ''')
+    inventory_data = cursor.fetchall()
+    connection.commit()
+    connection.close()
+    return render_template("inventory.html", data=inventory_data)
 
 
 @app.route("/timesheet", methods=['GET', 'POST'])
 def timesheet():
     if 'back' in request.form.to_dict().keys():
         return redirect(url_for('logged_in'))
-    return render_template("timesheet.html")
+    if access_level != 'admin' and access_level != 'manager' and access_level != 'employee':
+        return redirect(url_for('unauthorized'))
+    # connects to database and retrieves timesheet info to display to admin/manager/employee
+    connection = sqlite3.connect('dans_coffee_shop.db')
+    cursor = connection.cursor()
+    cursor.execute('''
+            SELECT * FROM timesheet      
+        ''')
+    timesheet_data = cursor.fetchall()
+    connection.commit()
+    connection.close()
+    return render_template("timesheet.html", data=timesheet_data)
 
 
 @app.route("/menu", methods=['GET', 'POST'])
 def menu():
     if 'back' in request.form.to_dict().keys():
         return redirect(url_for('logged_in'))
-    return render_template("menu.html")
+    # connects to database and retrieves menu info to display to user
+    connection = sqlite3.connect('dans_coffee_shop.db')
+    cursor = connection.cursor()
+    cursor.execute('''
+            SELECT * FROM menu      
+        ''')
+    menu_data = cursor.fetchall()
+    connection.commit()
+    connection.close()
+    return render_template("menu.html", data=menu_data)
 
 
 @app.route("/register",  methods=['GET', 'POST'])

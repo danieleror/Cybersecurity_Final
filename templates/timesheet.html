@@ -11,6 +11,23 @@
         <h1>Dan's Coffee Shop</h1>
         <h2>Employee Timesheet</h2>
 
+        <table>
+            <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Hours</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for d in data %}
+            <tr>
+                <td>{{ d[0] }}</td>
+                <td>{{ d[1] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
         <form method="POST">
                 <button name="back">
                     Back
